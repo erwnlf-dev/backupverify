@@ -2,7 +2,6 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useStore } from '@/lib/store';
-import { validateInput } from '@/lib/validate';
 import { z } from 'zod';
 import { Settings } from '@/lib/types';
 import { Input, Btn } from '@/components/ui';
@@ -71,11 +70,11 @@ const SettingsPage = () => {
 
   const validate = () => {
     try {
-      validateInput(settingsSchema, settings);
+      settingsSchema.parse(settings);
       setErrors({});
       return true;
     } catch (error) {
-      if (error instanceof ValidationError) {
+      if (error instanceof z.ZodError) {
         const validationErrors = error.issues.reduce((acc, issue) => {
           acc[issue.path.join('.')] = issue.message;
           return acc;
@@ -95,7 +94,11 @@ const SettingsPage = () => {
   };
 
   const handleExport = () => {
-    const dataStr = JSON.stringify(state.entities);
+    const dataStr = JSON.stringify({
+      backupJobs: state.backupJobs,
+      verificationTests: state.verificationTests,
+      alerts: state.alerts
+    });
     const blob = new Blob([dataStr], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -114,7 +117,7 @@ const SettingsPage = () => {
       const reader = new FileReader();
       reader.onload = (event) => {
         const data = JSON.parse(event.target?.result as string);
-        dispatch({ type: 'SEED', payload: data });
+        dispatch({ type: 'SEED', payload: data as any });
         dispatch({ type: 'TOAST', payload: 'Data imported' });
       };
       reader.readAsText(file);
@@ -124,7 +127,17 @@ const SettingsPage = () => {
   const handleReset = () => {
     if (confirm('Are you sure you want to reset all data?')) {
       localStorage.clear();
-      dispatch({ type: 'SEED', payload: {} });
+      dispatch({
+        type: 'SEED',
+        payload: {
+          backupJobs: [],
+          verificationTests: [],
+          alerts: [],
+          appSettings: settings,
+          loaded: true,
+          toast: null
+        }
+      });
       dispatch({ type: 'TOAST', payload: 'Data reset' });
     }
   };

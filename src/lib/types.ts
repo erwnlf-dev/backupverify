@@ -1,7 +1,4 @@
-// FILE: src/lib/types.ts
-'use client';
-
-interface BackupJob {
+export interface BackupJob {
   id: string;
   name: string;
   source: 'file-system' | 'database' | 'vm';
@@ -14,7 +11,7 @@ interface BackupJob {
   updatedAt: number;
 }
 
-interface VerificationTest {
+export interface VerificationTest {
   id: string;
   backupJobId: string;
   status: 'pending' | 'running' | 'passed' | 'failed';
@@ -24,7 +21,7 @@ interface VerificationTest {
   createdAt: number;
 }
 
-interface Alert {
+export interface Alert {
   id: string;
   testId: string;
   backupJobId: string;
@@ -34,7 +31,9 @@ interface Alert {
   createdAt: number;
 }
 
-interface AppSettings {
+export interface AppSettings {
+  name: string;
+  email: string;
   notifications: {
     email: boolean;
     webhook: boolean;
@@ -42,3 +41,5 @@ interface AppSettings {
   };
   darkMode: boolean;
 }
+
+export type Settings = AppSettings;

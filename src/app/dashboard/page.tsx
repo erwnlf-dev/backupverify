@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useStore } from '@/lib/store';
 import { BackupJob, VerificationTest, Alert } from '@/lib/types';
-import { LineChart, BarChart, PieChart } from 'react-chartjs-2';
+import { Line as LineChart } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement, BarElement } from 'chart.js';
 import { formatDistanceToNow } from 'date-fns';
 

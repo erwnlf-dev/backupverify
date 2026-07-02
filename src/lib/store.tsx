@@ -51,11 +51,11 @@ interface State {
   alerts: Alert[];
   appSettings: AppSettings;
   loaded: boolean;
-  toast: string | null;
+  toast?: string | null;
 }
 
 type Action =
-  | { type: 'SEED'; payload: State }
+  | { type: 'SEED'; payload: any }
   | { type: 'ADD_ENTITY'; entity: 'backupJobs' | 'verificationTests' | 'alerts'; payload: any }
   | { type: 'UPDATE_ENTITY'; entity: 'backupJobs' | 'verificationTests' | 'alerts'; payload: any }
   | { type: 'DELETE_ENTITY'; entity: 'backupJobs' | 'verificationTests' | 'alerts'; payload: string }

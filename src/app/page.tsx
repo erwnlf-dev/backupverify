@@ -17,7 +17,7 @@ const faqs = [
 export default function Home() {
   const [email, setEmail] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     localStorage.setItem('emailCapture', email);
     setEmail('');

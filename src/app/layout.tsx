@@ -1,7 +1,6 @@
 // FILE: src/app/layout.tsx
-'use client';
 import { Inter } from 'next/font/google';
-import { GlobalProvider } from './GlobalProvider';
+import { StoreProvider } from './providers';
 import Script from 'next/script';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -32,9 +31,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         }) }} />
       </head>
       <body className="min-h-screen bg-[#060907] text-[#ecfdf5]">
-        <GlobalProvider>
+        <StoreProvider>
           {children}
-        </GlobalProvider>
+        </StoreProvider>
         <Script strategy="lazyOnload" src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX" />
         <Script strategy="lazyOnload" id="google-analytics">
           {`
