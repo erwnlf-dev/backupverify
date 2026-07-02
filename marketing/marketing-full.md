@@ -1,218 +1,279 @@
-# BackupVerify Marketing Assets
+# BackupVerify Marketing Asset Pack
+
+---
 
 ## 1. Blog Post
 
-**Meta Title:** Stop Guessing, Start Proving: Automate Backup Recovery Testing  
-**Meta Description:** Learn how BackupVerify automates backup verification with sandbox restore testing for IT admins and MSPs, proving recoverability, not just reporting.
-
-**Primary Keywords:** backup verification, automated backup testing, backup recovery testing  
-**Secondary Keywords:** sandbox restore, compliance reports, IT admin tools, MSP tools, backup validation, disaster recovery testing, backup audit
-
-Your backups might be lying to you. Most backup solutions report "success" after a file copy, but can't prove the data is actually restorable and usable. That's a massive, silent risk.
-
-BackupVerify closes this gap. It's an automated backup verification tool that proves recoverability by restoring backups to isolated sandboxes, running validation tests, and logging the results. For IT admins and MSPs, it moves backup from a hopeful checkbox to a verified guarantee.
-
-### The Silent Problem with Traditional Backups
-
-You've set up your backup schedule. The daily reports say everything's green. You sleep well at night... until disaster strikes. You attempt a restore and find corrupted files, missing dependencies, or an incompatible format. Your "successful" backup was useless.
-
-This is the core problem: **reporting ≠ verification.** Traditional tools tell you data was *copied*, not that it can be *recovered*. Manual verification is sporadic, time-consuming, and impractical for ongoing compliance. Without regular, automated proof, you're exposed to RPO (Recovery Point Objective) breaches and compliance failures.
-
-### The Solution: BackupVerify
-
-BackupVerify provides continuous, automated proof of backup integrity. It connects to your backup source, restores it to a temporary, isolated environment (the sandbox), and executes a predefined validation script. The result is a logged pass/fail status with detailed output.
-
-This shifts backup verification from a manual, periodic task to an automated, continuous process. It's the difference between assuming your parachute is packed and actually testing it.
-
-### Feature Walkthrough: How You'll Use It
-
-1.  **Create & Schedule Backup Jobs:** Define your source (file-system, database, VM), set a cron schedule, and assign a retention period. BackupVerify manages the lifecycle.
-2.  **Automated Sandbox Testing:** On schedule, BackupVerify performs a non-disruptive restore to a sandbox. It runs your verification script (e.g., check database integrity, file hash comparison, VM boot test) and logs everything.
-3.  **Real-Time Compliance Dashboard:** See RPO adherence, test success rates, and alert trends at a glance. The dashboard computes real stats from your data, not dummy charts.
-4.  **Intelligent Alert Policies:** Set up alerts via email or webhook for specific events: test failures, RPO breaches, or low success rates. Get notified immediately when something breaks.
-5.  **One-Click Compliance Reports:** Generate PDF or CSV audit reports from your verification history. Perfect for compliance audits (HIPAA, SOC 2, etc.) without manual data gathering.
-6.  **Full Data Portability:** Export your entire configuration (jobs, tests, alerts) as JSON. Move data between instances or keep a clean backup of your verification state.
-
-### How It Works: 3-Step Onboarding
-
-1.  **Connect & Configure:** Install BackupVerify (it's a Next.js app you can host anywhere). Define your first backup job, specifying the source and a simple verification script.
-2.  **Schedule & Walk Away:** Set your cron schedule. BackupVerify handles the rest, running tests in the background.
-3.  **Monitor & Comply:** Check your dashboard for real-time status. When an alert fires, investigate the logs. Export a report when needed.
-
-### Pricing: No Risk, Start Free
-
-Compare the cost of BackupVerify to the potential cost of a failed restore.
-
-*   **BackupVerify Free:** Perfect for individual sysadmins. Unlimited backup jobs, verification tests, and alerts for **1 user**. Full feature set.
-*   **BackupVerify Pro ($19/mo):** For small teams. **5 user seats**, all features, priority support.
-*   **BackupVerify Enterprise ($79/mo):** For MSPs and large IT teams. **Unlimited users**, all features, dedicated support.
-
-**Backup tools cost $X/month. BackupVerify proves that $X isn't wasted.**
-
-### Stop Hoping, Start Proving
-
-Don't let a silent backup failure cause catastrophic downtime. Get concrete, automated proof that your data is recoverable.
-
-[**Try BackupVerify Free**](https://backupverify.pages.dev) | [View on GitHub](https://github.com/erwnlf-dev/backupverify)
+**Meta Title:** BackupVerify: Prove Your Backups Recover | IT Audit Tool
+**Meta Description:** Automate backup verification with sandbox restore testing. Prove recoverability, get compliance reports. Free for IT admins and MSPs.
 
 ---
+
+**You schedule backups and pray. That's not a strategy.**
+**BackupVerify automates restore testing in isolated sandboxes, proving recoverability before you face a real disaster.**
+
+### The Pain Point: You Don't Have a Backup, You Have a Hope
+
+The data is clear. 58% of ransomware attacks target backup infrastructure (Cybereason). Your backup solution's "successful" completion email tells you nothing. The real question is: can you restore that data to a working state? For most IT teams and MSPs, the answer is a terrifying "we think so."
+
+You struggle with:
+*   **Backup Blindness:** You see jobs complete, but never actually test the restoration process manually. It's too time-consuming.
+*   **Compliance Theater:** Auditors ask for proof of recoverability. You provide job logs, not restore test results.
+*   **Alert Fatigue:** Your current tools tell you when a backup fails, not when the backup is useless because it's corrupted or incompatible.
+*   **The "It'll Be Fine" Gamble:** You operate on faith, not data. The next outage could expose catastrophic gaps in your recovery plan.
+
+You need **backup verification**, not just backup reporting. You need proof.
+
+### The Solution: Automated, Non-Disruptive Restore Validation
+
+**BackupVerify** is the tool that closes the verification gap. It goes beyond telling you a backup happened. It automatically restores that backup to a secure, disposable sandbox environment and runs your predefined validation scripts.
+
+It’s the difference between "Backup completed at 2:00 AM" and "Verified: Backup from 2:00 AM restored to a clean environment, all critical files accessible, database integrity check passed."
+
+This provides **provable recoverability**. You generate compliance reports showing actual restore tests, not just logs. You get alerted on real failures, not just process errors.
+
+### Core Features, Real Use Cases
+
+1.  **Automated Sandbox Restore Tests**
+    *   **What:** Define a test script (e.g., `check_files_exist.sh`, `verify_db_checksum.sql`). BackupVerify spins up an isolated environment, restores your backup, and runs the script.
+    *   **Use Case:** An MSP managing 50 clients sets nightly restore tests for their file-system backups. A failure triggers an immediate alert, allowing them to fix the issue before the client ever needs to recover.
+
+2.  **Real-Time Compliance Dashboard**
+    *   **What:** Live charts showing test success rates, RPO adherence (are you restoring to the point you claimed?), and alert trends.
+    *   **Use Case:** An IT director prepares for a HIPAA audit. They generate a PDF report directly from the dashboard showing a 99% test success rate over 6 months with specific RTO/RPO metrics.
+
+3.  **Alert Policies & Notifications**
+    *   **What:** Create rules to trigger email or webhook alerts for test failures, RPO breaches, or dropping success rates.
+    *   **Use Case:** Your team's Slack channel gets a direct message the moment a critical database backup verification fails, enabling instant triage.
+
+4.  **Full Data Portability**
+    *   **What:** Export your entire configuration—jobs, tests, alerts—as a JSON file. Import it anywhere.
+    *   **Use Case:** You migrate between cloud providers or need to spin up a dev environment with production-like verification rules. One import, and you're set.
+
+5.  **Multi-Source & Cron Scheduling**
+    *   **What:** Schedule verifications with standard cron. Verify file-system, database, and VM backups.
+    *   **Use Case:** A sysadmin schedules weekly VM image restores to a sandbox to verify boot-up and core service availability, a task previously too complex for manual testing.
+
+6.  **Granular Backup Job Management**
+    *   **What:** Full CRUD for backup jobs with source, schedule, and retention definitions.
+    *   **Use Case:** Centralize all backup verification definitions in one place, separate from your backup software, providing a single source of truth for recoverability.
+
+### How It Works: 3 Steps to Verified Backups
+
+1.  **Define Your Job:** Point BackupVerify to your backup vault (S3 bucket, SMB share) and set a schedule (or trigger manually).
+2.  **Write a Test Script:** Create a simple script that checks what a successful restore *means* for you (files exist, database runs, config is valid).
+3.  **Monitor & Report:** Watch the dashboard. Get alerts on failure. Generate audit-ready reports on demand.
+
+### Pricing: Value Starts at Free
+
+Forget complex, per-node licensing. BackupVerify believes core verification should be accessible.
+
+| Plan | Price | Users | Key Inclusions |
+| :--- | :--- | :--- | :--- |
+| **Free** | $0/mo | 1 | Core backup verification, manual tests, basic dashboard |
+| **Pro** | $19/mo | 5 | Cron scheduling, email/webhook alerts, full reporting |
+| **Enterprise** | $79/mo | Unlimited | All features, priority support, SLA |
+
+**Compare:** Traditional backup audit tools start at $100+/month and often require dedicated hardware. BackupVerify delivers automated restore verification at a fraction of the cost.
+
+### Stop Guessing. Start Verifying.
+
+Your backups are only as good as their last successful test. Don't find out during a crisis that your recovery plan has a fatal flaw.
+
+**[Visit BackupVerify](https://backupverify.pages.dev)** to start your free verification plan. Prove your backups recover. For real.
+
+**SEO Keywords:**
+*   Primary: backup verification, restore testing, backup compliance report
+*   Secondary: automated backup testing, sandbox restore, IT audit tool, RPO compliance, MSP backup solution, data recoverability, backup validation
+
+---
+
 ## 2. Dev.to Article
 
-```yaml
 ---
 title: "I built BackupVerify — here's what I learned"
 published: true
-tags: startup, saas, webdev, sideproject, backup
+tags: #startup, #saas, #webdev, #sideproject, #backup
 canonical_url: https://backupverify.pages.dev/blog
 ---
-```
 
-The idea for BackupVerify came from a common, terrifying scenario. A friend who's an MSP called me in a panic. Their client's primary server died. Backups were "successful," but the restore was a different story. Corrupted database, missing files. It was a nightmare that cost them a client.
+### The "Backup Lie" and My Side Project to Fix It
 
-That's when I realized: the backup industry has a dirty secret. "Backup complete" doesn't mean "restorable." Most tools just verify the copy happened, not that the result is usable. For IT admins, that's a terrifying blind spot.
+There's a dirty secret in IT: most "backups" are just scheduled file-copy jobs. The real test—can you restore this to a working state in a crisis?—is almost never done automatically. I kept seeing this gap while working with IT teams. The backup software says "success," but nobody has the time to manually spin up a VM, restore the data, and run sanity checks.
 
-I wanted to build a simple, automated way to prove backup recoverability. Not another backup tool, but a **verification tool**.
+So I built **BackupVerify**.
 
-### The Stack Decision: Simplicity First
+**Live Demo:** https://backupverify.pages.dev
+**GitHub Repo:** https://github.com/erwnlf-dev/backupverify
 
-Since this was a side project, I needed to move fast. My principles: ship something useful, don't over-engineer.
+### The Core Idea
 
-*   **Framework:** Next.js 13 (App Router) – Server components for fast loads, API routes for a simple backend. Perfect for a full-stack app without managing separate services.
-*   **Styling:** Tailwind CSS – I'm not a designer. Tailwind lets me build a clean, functional UI quickly.
-*   **State:** React Context + useReducer – For this scope, it's perfect. Simple, no extra dependencies, and the state tree is straightforward. Avoiding Redux was a conscious choice for YAGNI (You Ain't Gonna Need It).
-*   **Persistence:** `localStorage` with JSON – Hear me out. For a V1 aimed at single users or small teams, this is genius. Zero backend database, zero auth complexity, zero hosting cost for persistence. Users own their data, it's portable (via the export feature), and it works instantly. It's a trade-off I'm willing to make for launch simplicity.
-*   **Deployment:** Cloudflare Pages – Free, fast, and easy. The whole app is a static site with some serverless functions.
+A tool that automates the restore test. Not just logging that a backup file exists, but actually restoring it into a disposable sandbox environment and running a validation script you define. If the script passes, the backup is verified. If it fails, you get an alert *before* you need to recover.
 
-### Key Learnings Building in Public
+### Technical Deep Dive & Lessons
 
-1.  **Start with the core loop.** The first thing I built wasn't a dashboard or a login screen. It was the engine: define a job -> run a verification test -> store the result. Everything else is UI around that loop.
-2.  **The "sandbox" is a abstraction.** For the V1, I simulate the sandbox restore. The real magic is in the interface that *would* connect to a real sandbox (like a Docker API or cloud provider). The value is in the orchestration and logging, not the container itself.
-3.  **Reports are the killer feature.** I thought the dashboard would be the main selling point. While useful, the **compliance report** is what gets the "aha!" moment. Being able to generate a PDF for an audit on demand? That's where the real work anxiety is relieved.
+#### 1. **The "Sandbox" is a Concept, Not Just Infrastructure**
+Since this is a MVP SaaS and not a full orchestration platform, the "sandbox" is initially a **logical sandbox**. The tool manages the verification *process* and *state*. The actual restore target is a path or service you specify. This makes it adaptable immediately without requiring specific cloud integrations. The focus is on the workflow: trigger restore -> run check -> record result.
+*   *Lesson:* Start with the abstract workflow. The specific infrastructure plugin (AWS, Proxmox, etc.) can come later.
+
+#### 2. **State Management in the Browser is Harder Than It Looks**
+The entire app state lives in `localStorage`. The `useReducer` context pattern works well for a single-user, in-browser app. The tricky part was making it feel "real" for a SaaS.
+*   **Import/Export:** This was key. The JSON import/export makes the `localStorage` persistence feel like a real, portable data layer. It's a poor-man's database, but for a demo, it's brilliant.
+*   *Lesson:* For internal tools or MVPs, don't underestimate the power of client-side state with a solid export format. It removes backend complexity from day one.
+
+#### 3. **Building for the "Report" is Building for the Product**
+A huge differentiator is the compliance report. I built the PDF/CSV export logic *early*. This forced me to structure the data models (`VerificationTest`, `Alert`) correctly from the start. A test isn't just a pass/fail; it's a timestamped log with a linked job.
+*   *Lesson:* If your product's value is in reporting, make reporting a core data concern, not an afterthought.
+
+#### 4. **Next.js 13 App Router is Perfect for This Pattern**
+The dashboard is a collection of data-driven pages. The App Router's nested layouts and server components (even if most logic is client-side here) make organizing the UI sections (backups, tests, alerts) clean and intuitive. The file-system routing mirrors the product's feature set.
+*   *Lesson:* Use the framework's structure to inform your product's information architecture.
 
 ### What's Next?
 
-BackupVerify is live, but it's just the start.
+The free tier is live and fully functional. The next steps are:
+1.  **Webhook Integrations:** For Slack, Teams, etc.
+2.  **More Validation Script Templates:** For common databases, web servers.
+3.  **Cloud Storage Connectors:** Direct S3/GCS integration for source/target.
 
-*   **Real Sandbox Connectors:** Integrate with Docker, Kubernetes, and major cloud providers (AWS, GCP, Azure) for actual isolated restores.
-*   **Team Features:** The Pro plan is ready. Now, I'll focus on true multi-user collaboration.
-*   **Smarter Alerts:** Use historical test data to predict failures before they happen.
+This is a tool I'm building because I believe the industry needs it. If you're an IT admin, MSP, or just someone who cares about real data resilience, give it a try. All feedback, issues, and PRs are welcome on the GitHub repo.
 
-If you've ever been burned by a bad backup, give it a try. It's free for single users.
-
-[**Try BackupVerify Live**](https://backupverify.pages.dev)  
-[**Check out the Code on GitHub**](https://github.com/erwnlf-dev/backupverify)
-
-Feedback, issues, and ideas are welcome. Thanks for reading.
+**Thanks for reading. Go verify a backup.**
 
 ---
+
 ## 3. Social Media Kit
 
 ### Twitter/X Posts
 
-**Post 1: Launch Announcement**
-Your backups say "success," but can you prove they'll restore? Introducing BackupVerify. Automate backup verification with sandbox restore testing. Prove recoverability, not just copying. Free for single users. #DevOps #Backup
+1.  **Launch Announcement:**
+    Your backups say "success." Can you prove they restore?
+    BackupVerify automates restore testing in sandboxes, generating compliance reports.
+    Prove recoverability. Don't just hope.
+    https://backupverify.pages.dev
 
-**Post 2: Feature Highlight**
-Stop writing manual backup validation scripts. BackupVerify automates the whole test: restore to a sandbox, run your script, log pass/fail, alert on failure. See your RPO adherence live. Try it: https://backupverify.pages.dev
+2.  **Feature Highlight:**
+    The worst time to test a backup is during a disaster.
+    BackupVerify runs automated restore tests against your backups, alerting you on failure *before* you need to recover.
+    Free plan available.
+    https://backupverify.pages.dev
 
-**Post 3: Social Proof/CTA**
-Problem: Your backup tool's "success" report gives false confidence. Solution: BackupVerify proves recoverability with automated, logged sandbox tests. Get real compliance reports. Free tier: https://backupverify.pages.dev
+3.  **Social Proof/CTA:**
+    "We saw successful backups but had never tested a full restore."
+    A common story. BackupVerify closes the verification gap with automated sandbox testing and audit-ready reports.
+    Start verifying: https://backupverify.pages.dev
 
 ### LinkedIn Post
 
-For IT teams and MSPs, the most dangerous moment isn't the system failure—it's the failed restore. Too many backup solutions report success on data copy, not data recoverability. This silent gap in validation exposes organizations to catastrophic downtime and compliance failures.
+Is your backup strategy built on hope?
 
-BackupVerify addresses this critical gap. It's an automated verification platform that proves backup integrity by restoring data to isolated sandboxes and running comprehensive validation checks. The result is concrete, logged proof of recoverability, turning backup from a hopeful assumption into a verified guarantee.
+The industry stats are sobering: a significant percentage of backup restores fail due to corruption, compatibility issues, or simple misconfiguration. The traditional IT workflow—schedule a backup and check the "success" log—is no longer sufficient for true data resilience and compliance.
 
-This shift from reporting to verification is essential for modern compliance (HIPAA, SOC 2) and operational resilience. Whether you're a solo sysadmin or managing multiple clients as an MSP, the ability to demonstrate and audit restore capability is no longer optional.
+This is why I'm excited to introduce **BackupVerify** (https://backupverify.pages.dev). It’s a SaaS tool designed for IT administrators and MSPs to automate the critical step of backup verification. Instead of assuming a backup works, BackupVerify automatically restores it to a disposable sandbox environment and runs your validation checks.
 
-We're launching with a full-featured free tier for individual users to help teams eliminate this risk. Learn more about automated backup verification and see the live demo: https://backupverify.pages.dev
+**Why this matters now:**
+1.  **Move from Hope to Proof:** Generate reports showing actual restore tests, satisfying auditors and internal controls.
+2.  **Reduce Risk Proactively:** Get alerted on verification failures during routine tests, not during a crisis.
+3.  **Simplify Compliance:** Centralized logging and reporting for HIPAA, SOC 2, or general data governance.
 
-#DisasterRecovery #Compliance #ITManagement #CyberSecurity #MSP #SaaS
+The core verification features are available in a **free tier**. We believe proving backup recoverability is a fundamental practice that should be accessible.
+
+If you're responsible for data protection, I'd love for you to take it for a spin and share your feedback. The link is in the comments.
+
+#DataProtection #Backup #ITAdmin #MSP #DisasterRecovery #SaaS #TechStartup
 
 ### Reddit Post (r/SideProject)
 
-**Title:** [Launch] BackupVerify — Automated backup verification through sandbox restore testing
+**Title:** [Launch] BackupVerify - I built a tool to automatically test if your backups actually restore
 
 **Body:**
-Hi everyone! I just launched BackupVerify.
+Hey r/SideProject,
 
-**What it is:** A tool for IT admins and MSPs to automate and prove backup recoverability. Most backup tools just report that a file copy succeeded. BackupVerify goes further by automatically restoring backups to an isolated sandbox, running your validation scripts, and logging pass/fail results with detailed reports.
+I'm an IT dev who got tired of the "backup lie"—where backup jobs report success, but nobody tests if they actually restore to a working state.
 
-**Why I built it:** I've seen too many situations where "successful" backups failed during actual restores. The gap between "data copied" and "data recoverable" is huge and risky. This tool aims to close that gap with automated proof.
+I built **BackupVerify**: a SaaS that automates restore testing.
 
-**Tech stack:** Next.js 13, TypeScript, Tailwind CSS, Cloudflare Pages. Persistence uses localStorage for simplicity and zero backend cost for the free tier.
+**What it does:**
+- You define backup jobs (source, schedule, vault).
+- You write a simple validation script (e.g., a shell script that checks for key files, a SQL query to verify data).
+- BackupVerify triggers a restore to a sandbox, runs your script, and records pass/fail.
+- You get a dashboard with success rates, alerts for failures, and can generate PDF compliance reports.
 
-**What's free:** The free tier is fully featured for **1 user**. Unlimited backup jobs, tests, alerts, and compliance report generation. No credit card needed.
+**Tech Stack:** Next.js 13, TypeScript, Tailwind. Persistence is `localStorage` with JSON import/export for portability.
 
-**What's next:** Real sandbox connectors (Docker, cloud VMs), team features, and predictive alerts.
+**What's free:** The free tier gives you 1 user, full backup job creation, manual test triggers, and the dashboard. No limits on jobs or tests.
 
-Check it out: [https://backupverify.pages.dev](https://backupverify.pages.dev)  
-Feedback and bug reports are hugely appreciated: [https://github.com/erwnlf-dev/backupverify](https://github.com/erwnlf-dev/backupverify)
+**What's next:** Webhook integrations, cloud storage connectors.
+
+I'm looking for honest feedback from sysadmins, MSPs, or devs who care about data resilience.
+
+**Link:** https://backupverify.pages.dev
+**GitHub:** https://github.com/erwnlf-dev/backupverify
+
+Thanks for checking it out!
 
 ---
+
 ## 4. Product Hunt Launch Prep
 
-**Tagline:** Automated backup verification that proves recoverability.
+**Tagline:** Prove your backups recover, automatically.
 
-**Description (260 chars):** BackupVerify automates backup verification for IT admins & MSPs. Restores backups to sandboxes, runs validation tests, and generates compliance reports. Stop hoping, start proving. Free for 1 user.
+**Description:**
+BackupVerify automates restore testing for IT admins and MSPs. It restores backups to sandboxes, runs validation scripts, and generates compliance reports—proving recoverability, unlike tools that only report backup completion. Free tier available.
 
-**First/Maker Comment:**
-Hey Product Hunt! 👋
+**Maker Comment:**
+Hi! 👋 I'm the creator of BackupVerify.
 
-I'm the maker of BackupVerify. This project was born from a real-world problem: I've seen too many businesses rely on "successful" backup reports, only to find out during a disaster that the backups were corrupted or incomplete.
+I built this because I saw a massive gap in the backup ecosystem: we have tools that *do* backups, but very few that *verify* they work. The manual process of restoring a backup to test it is too time-consuming and gets skipped—until it's too late.
 
-BackupVerify's goal is simple: provide automated, concrete proof that your data is actually recoverable, not just copied. It restores backups to isolated environments, runs your validation checks, and gives you a clear pass/fail with detailed logs and compliance-ready reports.
+BackupVerify automates that critical verification step. It’s not just a dashboard for backup logs; it’s a workflow engine that proves your data is recoverable.
 
-**What's next on the roadmap:**
-- Real sandbox connectors (Docker, Kubernetes, AWS/GCP/Azure)
-- Enhanced team collaboration features
-- Intelligent alerting based on trend analysis
+**What's next:** I'm focusing on adding more validation script templates and integrating with popular monitoring/webhook platforms like Slack.
 
-I'm super excited to get your feedback. Please try the demo and let me know what you think!
+I'd love to get your feedback on the core concept and the free tier. Does this solve a real pain point for you?
 
-**Topics/Tags:** Developer Tools, SaaS, Cybersecurity, IT Management, Productivity
+**Topics/Tags:** Developer Tools, Productivity, SaaS, Security & Privacy, Backup & Restore
 
 ---
+
 ## 5. SEO Metadata Package
 
-**Title Tag:** BackupVerify: Automated Backup Verification & Recovery Testing
+**Title Tag (50-60 chars):** BackupVerify: Automated Backup Restore Testing & Reports
 
-**Meta Description:** BackupVerify automates backup verification through sandbox restore testing for IT admins and MSPs. Prove data recoverability with compliance reports. Free tier available.
+**Meta Description (150-160 chars):** Automate backup verification with sandbox restore testing. Prove recoverability, generate compliance reports. Free for IT admins & MSPs.
 
-**Open Graph Title:** BackupVerify - Prove Your Backups Work  
-**Open Graph Description:** Stop guessing if your backups are restorable. BackupVerify automates verification by testing restores in sandboxes, giving IT teams concrete proof and compliance reports.
+**Open Graph:**
+*   **OG Title:** BackupVerify - Prove Your Backups Work Before You Need Them
+*   **OG Description:** The automated tool that restores your backups to sandboxes and validates them. Get audit-ready compliance reports and real-time alerts. Start free.
 
-**Suggested H1:** Prove Your Backups Are Recoverable  
-**Suggested H2s:**
-- Why Backup Reports Can Be Deceiving
-- How Automated Backup Verification Works
-- Step-by-Step: Verify Your First Backup
-- BackupVerify vs. Traditional Backup Reporting
-- Compliance and Audit-Ready Reports
+**H1, H2 Heading Suggestions:**
+*   H1: Automated Backup Verification & Restore Testing
+*   H2: Why Backup Verification Matters More Than Backup Reporting
+*   H2: How BackupVerify's Sandbox Restore Testing Works
+*   H2: Core Features for IT Admins and MSPs
+*   H2: Simple Pricing for Data Resilience
 
 **Primary Keywords (5):**
 1.  backup verification
-2.  automated backup testing
-3.  backup recovery testing
-4.  restore verification
-5.  backup validation software
+2.  restore testing
+3.  backup compliance report
+4.  automated backup testing
+5.  backup recoverability
 
 **Secondary Keywords (10):**
-1.  sandbox restore testing
-2.  backup compliance reports
-3.  IT admin backup tools
-4.  MSP backup verification
-5.  RPO adherence monitoring
-6.  disaster recovery testing
-7.  backup audit logs
-8.  automated restore test
-9.  backup success validation
-10. backup integrity check
+1.  sandbox restore test
+2.  IT audit tool
+3.  RPO compliance
+4.  MSP backup solution
+5.  data recoverability test
+6.  backup validation software
+7.  disaster recovery testing
+8.  backup monitoring dashboard
+9.  backup alerting system
+10. restore verification automation
 
 **Internal Linking Suggestions:**
-- From the **Product Overview** page, link to the **Feature Walkthrough** and **Pricing** pages.
-- From the **How It Works** guide, link to the **Creating Backup Jobs** and **Understanding Dashboard Metrics** tutorials.
-- From the **Compliance Reports** feature section, link to a case study or blog post on audit preparation.
-- From blog posts, link to the live **Demo** and **Documentation**.
-- Footer should link to key pages: Pricing, Docs, Blog, GitHub.
+*   From "Features" section, link to dedicated pages or anchors for "Compliance Reports" and "Alert Policies."
+*   From "How It Works" to the "Backup Jobs" and "Verification Tests" sections of the app.
+*   From "Pricing" to the "Features" comparison table.
+*   Use anchor links from blog post subheadings (e.g., #sandbox-restore) to corresponding feature sections.

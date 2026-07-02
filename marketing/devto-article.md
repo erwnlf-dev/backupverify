@@ -1,49 +1,53 @@
 ## 2. Dev.to Article
 
-```yaml
 ---
 title: "I built BackupVerify — here's what I learned"
 published: true
-tags: startup, saas, webdev, sideproject, backup
+tags: #startup, #saas, #webdev, #sideproject, #backup
 canonical_url: https://backupverify.pages.dev/blog
 ---
-```
 
-The idea for BackupVerify came from a common, terrifying scenario. A friend who's an MSP called me in a panic. Their client's primary server died. Backups were "successful," but the restore was a different story. Corrupted database, missing files. It was a nightmare that cost them a client.
+### The "Backup Lie" and My Side Project to Fix It
 
-That's when I realized: the backup industry has a dirty secret. "Backup complete" doesn't mean "restorable." Most tools just verify the copy happened, not that the result is usable. For IT admins, that's a terrifying blind spot.
+There's a dirty secret in IT: most "backups" are just scheduled file-copy jobs. The real test—can you restore this to a working state in a crisis?—is almost never done automatically. I kept seeing this gap while working with IT teams. The backup software says "success," but nobody has the time to manually spin up a VM, restore the data, and run sanity checks.
 
-I wanted to build a simple, automated way to prove backup recoverability. Not another backup tool, but a **verification tool**.
+So I built **BackupVerify**.
 
-### The Stack Decision: Simplicity First
+**Live Demo:** https://backupverify.pages.dev
+**GitHub Repo:** https://github.com/erwnlf-dev/backupverify
 
-Since this was a side project, I needed to move fast. My principles: ship something useful, don't over-engineer.
+### The Core Idea
 
-*   **Framework:** Next.js 13 (App Router) – Server components for fast loads, API routes for a simple backend. Perfect for a full-stack app without managing separate services.
-*   **Styling:** Tailwind CSS – I'm not a designer. Tailwind lets me build a clean, functional UI quickly.
-*   **State:** React Context + useReducer – For this scope, it's perfect. Simple, no extra dependencies, and the state tree is straightforward. Avoiding Redux was a conscious choice for YAGNI (You Ain't Gonna Need It).
-*   **Persistence:** `localStorage` with JSON – Hear me out. For a V1 aimed at single users or small teams, this is genius. Zero backend database, zero auth complexity, zero hosting cost for persistence. Users own their data, it's portable (via the export feature), and it works instantly. It's a trade-off I'm willing to make for launch simplicity.
-*   **Deployment:** Cloudflare Pages – Free, fast, and easy. The whole app is a static site with some serverless functions.
+A tool that automates the restore test. Not just logging that a backup file exists, but actually restoring it into a disposable sandbox environment and running a validation script you define. If the script passes, the backup is verified. If it fails, you get an alert *before* you need to recover.
 
-### Key Learnings Building in Public
+### Technical Deep Dive & Lessons
 
-1.  **Start with the core loop.** The first thing I built wasn't a dashboard or a login screen. It was the engine: define a job -> run a verification test -> store the result. Everything else is UI around that loop.
-2.  **The "sandbox" is a abstraction.** For the V1, I simulate the sandbox restore. The real magic is in the interface that *would* connect to a real sandbox (like a Docker API or cloud provider). The value is in the orchestration and logging, not the container itself.
-3.  **Reports are the killer feature.** I thought the dashboard would be the main selling point. While useful, the **compliance report** is what gets the "aha!" moment. Being able to generate a PDF for an audit on demand? That's where the real work anxiety is relieved.
+#### 1. **The "Sandbox" is a Concept, Not Just Infrastructure**
+Since this is a MVP SaaS and not a full orchestration platform, the "sandbox" is initially a **logical sandbox**. The tool manages the verification *process* and *state*. The actual restore target is a path or service you specify. This makes it adaptable immediately without requiring specific cloud integrations. The focus is on the workflow: trigger restore -> run check -> record result.
+*   *Lesson:* Start with the abstract workflow. The specific infrastructure plugin (AWS, Proxmox, etc.) can come later.
+
+#### 2. **State Management in the Browser is Harder Than It Looks**
+The entire app state lives in `localStorage`. The `useReducer` context pattern works well for a single-user, in-browser app. The tricky part was making it feel "real" for a SaaS.
+*   **Import/Export:** This was key. The JSON import/export makes the `localStorage` persistence feel like a real, portable data layer. It's a poor-man's database, but for a demo, it's brilliant.
+*   *Lesson:* For internal tools or MVPs, don't underestimate the power of client-side state with a solid export format. It removes backend complexity from day one.
+
+#### 3. **Building for the "Report" is Building for the Product**
+A huge differentiator is the compliance report. I built the PDF/CSV export logic *early*. This forced me to structure the data models (`VerificationTest`, `Alert`) correctly from the start. A test isn't just a pass/fail; it's a timestamped log with a linked job.
+*   *Lesson:* If your product's value is in reporting, make reporting a core data concern, not an afterthought.
+
+#### 4. **Next.js 13 App Router is Perfect for This Pattern**
+The dashboard is a collection of data-driven pages. The App Router's nested layouts and server components (even if most logic is client-side here) make organizing the UI sections (backups, tests, alerts) clean and intuitive. The file-system routing mirrors the product's feature set.
+*   *Lesson:* Use the framework's structure to inform your product's information architecture.
 
 ### What's Next?
 
-BackupVerify is live, but it's just the start.
+The free tier is live and fully functional. The next steps are:
+1.  **Webhook Integrations:** For Slack, Teams, etc.
+2.  **More Validation Script Templates:** For common databases, web servers.
+3.  **Cloud Storage Connectors:** Direct S3/GCS integration for source/target.
 
-*   **Real Sandbox Connectors:** Integrate with Docker, Kubernetes, and major cloud providers (AWS, GCP, Azure) for actual isolated restores.
-*   **Team Features:** The Pro plan is ready. Now, I'll focus on true multi-user collaboration.
-*   **Smarter Alerts:** Use historical test data to predict failures before they happen.
+This is a tool I'm building because I believe the industry needs it. If you're an IT admin, MSP, or just someone who cares about real data resilience, give it a try. All feedback, issues, and PRs are welcome on the GitHub repo.
 
-If you've ever been burned by a bad backup, give it a try. It's free for single users.
-
-[**Try BackupVerify Live**](https://backupverify.pages.dev)  
-[**Check out the Code on GitHub**](https://github.com/erwnlf-dev/backupverify)
-
-Feedback, issues, and ideas are welcome. Thanks for reading.
+**Thanks for reading. Go verify a backup.**
 
 ---

@@ -2,6 +2,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { 
   ShieldCheck, 
   Terminal, 
@@ -14,7 +15,10 @@ import {
   ChevronRight, 
   ArrowRight,
   Database,
-  Search
+  Search,
+  CreditCard,
+  Lock,
+  Loader
 } from 'lucide-react';
 
 const testimonials = [
@@ -36,7 +40,7 @@ const faqs = [
 ];
 
 const features = [
-  { title: 'Automated Sanbox Verification', desc: 'No manual intervention required. Backups are booted in sandbox and verified automatically.', icon: ShieldCheck },
+  { title: 'Automated Sandbox Verification', desc: 'No manual intervention required. Backups are booted in sandbox and verified automatically.', icon: ShieldCheck },
   { title: 'Script-based Recovery Tests', desc: 'Run custom validation scripts inside the sandbox to ensure application layers start.', icon: Terminal },
   { title: 'RPO Adherence Audits', desc: 'Compute real-time compliance metrics to guarantee zero data loss windows.', icon: Clock },
   { title: 'Smart Alert Notifications', desc: 'Get notified via webhook and email the second a backup file fails to load.', icon: RefreshCw },
@@ -54,10 +58,22 @@ const featuresID = [
 ];
 
 export default function Home() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [lang, setLang] = useState<'EN' | 'ID'>('EN');
   const [abTestGroup, setAbTestGroup] = useState<string>('A');
   const [cookieConsent, setCookieConsent] = useState<boolean>(true);
+
+  // Checkout Modal State
+  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  const [selectedPrice, setSelectedPrice] = useState<string>('');
+  const [cardName, setCardName] = useState('');
+  const [cardNumber, setCardNumber] = useState('');
+  const [cardExpiry, setCardExpiry] = useState('');
+  const [cardCvv, setCardCvv] = useState('');
+  const [checkoutEmail, setCheckoutEmail] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [validationError, setValidationError] = useState('');
 
   useEffect(() => {
     // i18n
@@ -100,6 +116,52 @@ export default function Home() {
     const next = lang === 'EN' ? 'ID' : 'EN';
     setLang(next);
     localStorage.setItem('app_lang', next);
+  };
+
+  const handleOpenCheckout = (planName: string, priceVal: string) => {
+    setSelectedPlan(planName);
+    setSelectedPrice(priceVal);
+    setValidationError('');
+  };
+
+  const handleCheckoutSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setValidationError('');
+
+    if (!checkoutEmail.includes('@')) {
+      setValidationError(lang === 'EN' ? 'Please enter a valid email address.' : 'Silakan masukkan alamat email yang valid.');
+      return;
+    }
+    if (cardNumber.replace(/\s/g, '').length < 16) {
+      setValidationError(lang === 'EN' ? 'Card number must be 16 digits.' : 'Nomor kartu harus terdiri dari 16 digit.');
+      return;
+    }
+    if (!cardExpiry.includes('/')) {
+      setValidationError(lang === 'EN' ? 'Expiry format must be MM/YY.' : 'Format kedaluwarsa harus MM/YY.');
+      return;
+    }
+    if (cardCvv.length < 3) {
+      setValidationError(lang === 'EN' ? 'CVV must be at least 3 digits.' : 'CVV harus terdiri dari minimal 3 digit.');
+      return;
+    }
+
+    setIsProcessing(true);
+
+    setTimeout(() => {
+      setIsProcessing(false);
+      localStorage.setItem('checkout_completed', 'true');
+      localStorage.setItem('subscribed_plan', selectedPlan || '');
+      setSelectedPlan(null);
+      
+      // Auto-populate email capture to lead database
+      localStorage.setItem('lead_email', checkoutEmail);
+
+      alert(lang === 'EN' 
+        ? `Payment successful! Welcome to BackupVerify ${selectedPlan}. Redirecting to dashboard...`
+        : `Pembayaran sukses! Selamat datang di BackupVerify ${selectedPlan}. Mengalihkan ke dashboard...`
+      );
+      router.push('/dashboard');
+    }, 2500);
   };
 
   return (
@@ -164,13 +226,13 @@ export default function Home() {
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
-            <Link 
-              href="/dashboard"
+            <button 
+              onClick={() => handleOpenCheckout('Production Pro', '$29/mo')}
               className="w-full sm:w-auto px-8 py-3.5 rounded bg-[#10b981] hover:bg-[#34d399] text-sm font-bold text-white transition-all shadow-[0_0_20px_rgba(16,185,129,0.2)] flex items-center justify-center space-x-2"
             >
               <span>{lang === 'EN' ? 'Start Free Verification' : 'Mulai Verifikasi Gratis'}</span>
               <ChevronRight className="h-4 w-4" />
-            </Link>
+            </button>
             <a 
               href="#features"
               className="w-full sm:w-auto px-8 py-3.5 rounded border border-[rgba(16,185,129,0.12)] text-sm font-semibold text-[#a7f3d0] hover:bg-white/5 transition-all text-center"
@@ -237,9 +299,12 @@ export default function Home() {
                   <li>• Community Slack</li>
                 </ul>
               </div>
-              <Link href="/dashboard" className="w-full py-2.5 rounded bg-white/5 border border-[rgba(16,185,129,0.12)] hover:bg-white/10 text-center font-bold text-xs text-white transition-all">
+              <button 
+                onClick={() => handleOpenCheckout('Developer Free', '$0')}
+                className="w-full py-2.5 rounded bg-white/5 border border-[rgba(16,185,129,0.12)] hover:bg-white/10 text-center font-bold text-xs text-white transition-all"
+              >
                 {lang === 'EN' ? 'Start Free' : 'Mulai Gratis'}
-              </Link>
+              </button>
             </div>
 
             {/* Pro */}
@@ -260,9 +325,12 @@ export default function Home() {
                   <li>• Priority Email</li>
                 </ul>
               </div>
-              <Link href="/dashboard" className="w-full py-2.5 rounded bg-[#10b981] hover:bg-[#34d399] text-center font-bold text-xs text-white transition-all shadow-[0_0_15px_rgba(16,185,129,0.15)]">
+              <button 
+                onClick={() => handleOpenCheckout('Production Pro', '$29/mo')}
+                className="w-full py-2.5 rounded bg-[#10b981] hover:bg-[#34d399] text-center font-bold text-xs text-white transition-all shadow-[0_0_15px_rgba(16,185,129,0.15)]"
+              >
                 {lang === 'EN' ? 'Upgrade Pro' : 'Tingkatkan Pro'}
-              </Link>
+              </button>
             </div>
 
             {/* Enterprise */}
@@ -280,9 +348,12 @@ export default function Home() {
                   <li>• 24/7 SLA Support</li>
                 </ul>
               </div>
-              <Link href="/dashboard" className="w-full py-2.5 rounded bg-white/5 border border-[rgba(16,185,129,0.12)] hover:bg-white/10 text-center font-bold text-xs text-white transition-all">
+              <button 
+                onClick={() => handleOpenCheckout('Cloud Enterprise', '$99/mo')}
+                className="w-full py-2.5 rounded bg-white/5 border border-[rgba(16,185,129,0.12)] hover:bg-white/10 text-center font-bold text-xs text-white transition-all"
+              >
                 {lang === 'EN' ? 'Contact Sales' : 'Hubungi Sales'}
-              </Link>
+              </button>
             </div>
           </div>
         </div>
@@ -389,6 +460,155 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
+      {/* INTERACTIVE CHECKOUT MODAL */}
+      {selectedPlan && (
+        <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0d120f] border border-[rgba(16,185,129,0.2)] w-full max-w-md rounded-lg shadow-2xl overflow-hidden animate-fade-in font-mono text-xs text-[#a7f3d0] flex flex-col">
+            {/* Header */}
+            <div className="p-4 border-b border-[rgba(16,185,129,0.08)] bg-[#080b09] flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <CreditCard className="h-4 w-4 text-[#10b981]" />
+                <span className="font-bold text-[#ecfdf5]">{lang === 'EN' ? 'SECURE STRIPE CHECKOUT' : 'PEMBAYARAN STRIPE AMAN'}</span>
+              </div>
+              <button 
+                onClick={() => setSelectedPlan(null)}
+                className="text-[#a7f3d0]/40 hover:text-white"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Plan Info */}
+            <div className="p-4 bg-[rgba(16,185,129,0.05)] border-b border-[rgba(16,185,129,0.08)] flex justify-between items-center">
+              <div>
+                <p className="font-bold text-[#ecfdf5] text-sm">{selectedPlan}</p>
+                <p className="text-[10px] text-[#a7f3d0]/50">{lang === 'EN' ? 'Automated Sandbox Pipeline' : 'Pipa Sandbox Otomatis'}</p>
+              </div>
+              <p className="text-base font-bold text-[#10b981]">{selectedPrice}</p>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleCheckoutSubmit} className="p-6 space-y-4">
+              {validationError && (
+                <div className="p-3 bg-red-950/40 border border-red-500/30 text-red-400 rounded text-[11px] leading-relaxed">
+                  ⚠️ {validationError}
+                </div>
+              )}
+
+              {/* Email */}
+              <div className="space-y-1">
+                <label className="block text-[10px] uppercase font-bold text-[#a7f3d0]/40">{lang === 'EN' ? 'Account Email' : 'Email Akun'}</label>
+                <input
+                  type="email"
+                  placeholder="admin@corporate.com"
+                  value={checkoutEmail}
+                  onChange={(e) => setCheckoutEmail(e.target.value)}
+                  className="w-full bg-[#060907] border border-[rgba(16,185,129,0.12)] rounded px-3 py-2 text-[#ecfdf5] placeholder-[#a7f3d0]/20 focus:outline-none focus:border-[#10b981]"
+                  required
+                  disabled={isProcessing}
+                />
+              </div>
+
+              {/* Cardholder Name */}
+              <div className="space-y-1">
+                <label className="block text-[10px] uppercase font-bold text-[#a7f3d0]/40">{lang === 'EN' ? 'Cardholder Name' : 'Nama Pemilik Kartu'}</label>
+                <input
+                  type="text"
+                  placeholder="John Doe"
+                  value={cardName}
+                  onChange={(e) => setCardName(e.target.value)}
+                  className="w-full bg-[#060907] border border-[rgba(16,185,129,0.12)] rounded px-3 py-2 text-[#ecfdf5] placeholder-[#a7f3d0]/20 focus:outline-none focus:border-[#10b981]"
+                  required
+                  disabled={isProcessing}
+                />
+              </div>
+
+              {/* Card Number */}
+              <div className="space-y-1">
+                <label className="block text-[10px] uppercase font-bold text-[#a7f3d0]/40">{lang === 'EN' ? 'Card Number' : 'Nomor Kartu'}</label>
+                <div className="relative">
+                  <CreditCard className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#a7f3d0]/30" />
+                  <input
+                    type="text"
+                    maxLength={19}
+                    placeholder="4242 4242 4242 4242"
+                    value={cardNumber}
+                    onChange={(e) => {
+                      // Format digits with space separation
+                      const val = e.target.value.replace(/\D/g, '').match(/.{1,4}/g)?.join(' ') || '';
+                      setCardNumber(val);
+                    }}
+                    className="w-full bg-[#060907] border border-[rgba(16,185,129,0.12)] rounded pl-10 pr-3 py-2 text-[#ecfdf5] placeholder-[#a7f3d0]/20 focus:outline-none focus:border-[#10b981]"
+                    required
+                    disabled={isProcessing}
+                  />
+                </div>
+              </div>
+
+              {/* Expiry & CVV */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="block text-[10px] uppercase font-bold text-[#a7f3d0]/40">{lang === 'EN' ? 'Expiry (MM/YY)' : 'Kedaluwarsa (MM/YY)'}</label>
+                  <input
+                    type="text"
+                    maxLength={5}
+                    placeholder="12/28"
+                    value={cardExpiry}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/\D/g, '');
+                      if (val.length >= 2) {
+                        setCardExpiry(val.slice(0, 2) + '/' + val.slice(2, 4));
+                      } else {
+                        setCardExpiry(val);
+                      }
+                    }}
+                    className="w-full bg-[#060907] border border-[rgba(16,185,129,0.12)] rounded px-3 py-2 text-[#ecfdf5] placeholder-[#a7f3d0]/20 focus:outline-none focus:border-[#10b981] text-center"
+                    required
+                    disabled={isProcessing}
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="block text-[10px] uppercase font-bold text-[#a7f3d0]/40">CVV</label>
+                  <input
+                    type="password"
+                    maxLength={4}
+                    placeholder="•••"
+                    value={cardCvv}
+                    onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, ''))}
+                    className="w-full bg-[#060907] border border-[rgba(16,185,129,0.12)] rounded px-3 py-2 text-[#ecfdf5] placeholder-[#a7f3d0]/20 focus:outline-none focus:border-[#10b981] text-center"
+                    required
+                    disabled={isProcessing}
+                  />
+                </div>
+              </div>
+
+              {/* Safe Lock advisory */}
+              <div className="pt-2 flex items-center space-x-2 text-[10px] text-[#a7f3d0]/40">
+                <Lock className="h-3.5 w-3.5 text-[#10b981]" />
+                <span>{lang === 'EN' ? 'TLS 1.3 256-bit encryption. Demo simulator mode.' : 'Enkripsi TLS 1.3 256-bit. Mode simulator demo.'}</span>
+              </div>
+
+              {/* Submit */}
+              <button
+                type="submit"
+                disabled={isProcessing}
+                className="w-full py-3 bg-[#10b981] hover:bg-[#34d399] disabled:opacity-50 text-white rounded font-bold transition-all shadow-[0_0_15px_rgba(16,185,129,0.15)] flex items-center justify-center space-x-2"
+              >
+                {isProcessing ? (
+                  <>
+                    <Loader className="h-4 w-4 animate-spin" />
+                    <span>{lang === 'EN' ? 'PROCESSING SECURELY...' : 'MEMPROSES TRANSAKSI...'}</span>
+                  </>
+                ) : (
+                  <span>{lang === 'EN' ? `CONFIRM PAYMENT ${selectedPrice}` : `KONFIRMASI PEMBAYARAN ${selectedPrice}`}</span>
+                )}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* GDPR COOKIE BANNER */}
       {cookieConsent && (

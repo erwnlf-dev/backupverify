@@ -1,23 +1,21 @@
 ## 4. Product Hunt Launch Prep
 
-**Tagline:** Automated backup verification that proves recoverability.
+**Tagline:** Prove your backups recover, automatically.
 
-**Description (260 chars):** BackupVerify automates backup verification for IT admins & MSPs. Restores backups to sandboxes, runs validation tests, and generates compliance reports. Stop hoping, start proving. Free for 1 user.
+**Description:**
+BackupVerify automates restore testing for IT admins and MSPs. It restores backups to sandboxes, runs validation scripts, and generates compliance reports—proving recoverability, unlike tools that only report backup completion. Free tier available.
 
-**First/Maker Comment:**
-Hey Product Hunt! 👋
+**Maker Comment:**
+Hi! 👋 I'm the creator of BackupVerify.
 
-I'm the maker of BackupVerify. This project was born from a real-world problem: I've seen too many businesses rely on "successful" backup reports, only to find out during a disaster that the backups were corrupted or incomplete.
+I built this because I saw a massive gap in the backup ecosystem: we have tools that *do* backups, but very few that *verify* they work. The manual process of restoring a backup to test it is too time-consuming and gets skipped—until it's too late.
 
-BackupVerify's goal is simple: provide automated, concrete proof that your data is actually recoverable, not just copied. It restores backups to isolated environments, runs your validation checks, and gives you a clear pass/fail with detailed logs and compliance-ready reports.
+BackupVerify automates that critical verification step. It’s not just a dashboard for backup logs; it’s a workflow engine that proves your data is recoverable.
 
-**What's next on the roadmap:**
-- Real sandbox connectors (Docker, Kubernetes, AWS/GCP/Azure)
-- Enhanced team collaboration features
-- Intelligent alerting based on trend analysis
+**What's next:** I'm focusing on adding more validation script templates and integrating with popular monitoring/webhook platforms like Slack.
 
-I'm super excited to get your feedback. Please try the demo and let me know what you think!
+I'd love to get your feedback on the core concept and the free tier. Does this solve a real pain point for you?
 
-**Topics/Tags:** Developer Tools, SaaS, Cybersecurity, IT Management, Productivity
+**Topics/Tags:** Developer Tools, Productivity, SaaS, Security & Privacy, Backup & Restore
 
 ---
