@@ -79,6 +79,27 @@
   }
 }
 
+@layer components {
+  .card {
+    @apply rounded-lg border border-[rgba(16,185,129,0.08)] bg-[#0d120f] p-5;
+  }
+  .input {
+    @apply rounded-md border border-[rgba(16,185,129,0.12)] bg-[#161f1a] px-3 py-2 text-sm text-[#ecfdf5] focus:border-[#10b981] focus:outline-none;
+  }
+  .btn-primary {
+    @apply rounded-md bg-[#10b981] px-4 py-2 text-sm font-medium text-white hover:bg-[#34d399] transition-colors;
+  }
+  .btn-ghost {
+    @apply rounded-md border border-[rgba(255,255,255,0.08)] px-4 py-2 text-sm text-[#d1fae5] hover:bg-white/5 transition-colors;
+  }
+  .sidebar {
+    @apply fixed inset-y-0 left-0 w-60 border-r border-[rgba(16,185,129,0.08)] bg-[#0d120f];
+  }
+  .modal-body {
+    @apply w-full max-w-lg rounded-lg border border-[rgba(16,185,129,0.12)] bg-[#161f1a] p-6;
+  }
+}
+
 @keyframes shimmer {
   0% {
     background-position: -200% 0;

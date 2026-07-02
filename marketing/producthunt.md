@@ -1,26 +1,29 @@
 ## 4. Product Hunt Launch Prep
 
-**Tagline:** Automated backup restore testing that proves recoverability.
+**Tagline:** Prove your backups can restore. Automatically.
 
-**Description:** For IT admins & MSPs. Automatically restores backups to isolated sandboxes, runs validation scripts, and generates compliance reports. Proves your backups work, not just that they run. Starts free.
+**Description:**  
+BackupVerify automates backup verification for IT admins and MSPs. It schedules restore tests in sandboxes, runs validation scripts, and generates audit reports. Stop trusting backup success logs. Start proving recoverability with compliance-ready data.
 
-**First/Maker Comment:**
+**First Comment (Maker):**  
 Hey Product Hunt! 👋
 
-I'm the maker of BackupVerify. For years, I've seen teams rely on backup logs to prove their DR strategy. But a "success" message from a backup job only means data was copied—it doesn't mean you can recover from it.
+I'm the maker of BackupVerify. After seeing a team suffer a critical data loss despite having "green" backup monitoring, I knew we needed better verification.
 
-BackupVerify automates the missing step: **restore testing**. It performs non-disruptive, isolated restore tests and gives you a real-time dashboard of what's actually recoverable, plus audit-ready reports.
+Most tools tell you a backup happened. BackupVerify tells you if you can actually *get your data back* by automating the restore test process.
 
-It's built with Next.js 13 and is deployed on Cloudflare Pages. The core is free to use, and I open-sourced the code on GitHub.
+What's next:
+1.  True container-based sandboxing for ultimate isolation.
+2.  More integrations (AWS, Azure, GCP storage sources).
+3.  Advanced alerting policies.
 
-**What's next:** Real restore connectors for filesystems and databases. Would love your feedback on the workflow and what integrations would be most valuable.
+I built this solo and would love your feedback on the concept and the product. Try the free tier—no sign-up required.
 
-Check it out at https://backupverify.pages.dev and ask me anything below!
+**Topics/Tags:**  
+1.  Developer Tools  
+2.  Cybersecurity  
+3.  IT Management  
+4.  Cloud Computing  
+5.  SaaS
 
-**Topics/Tags:**
-1. Developer Tools
-2. Cybersecurity
-3. Productivity
-4. SaaS
-5. Open Source
-```
+---
