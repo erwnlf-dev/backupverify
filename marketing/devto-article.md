@@ -9,53 +9,41 @@ canonical_url: https://backupverify.pages.dev/blog
 ---
 ```
 
-**Last year, I watched a team scramble after a ransomware attack.** Their backups were green. Their restore process had never been tested. They paid the ransom.
+The idea for BackupVerify came from a common, terrifying scenario. A friend who's an MSP called me in a panic. Their client's primary server died. Backups were "successful," but the restore was a different story. Corrupted database, missing files. It was a nightmare that cost them a client.
 
-That incident haunted me. As a developer, I knew the tools existed: cron jobs, restore scripts, monitoring. But the glue was missing. So I built it.
+That's when I realized: the backup industry has a dirty secret. "Backup complete" doesn't mean "restorable." Most tools just verify the copy happened, not that the result is usable. For IT admins, that's a terrifying blind spot.
 
-**BackupVerify** ([live demo](https://backupverify.pages.dev) | [source code](https://github.com/erwnlf-dev/backupverify)) automates backup restore testing. It doesn't just report "backup succeeded." It answers: "Can I restore this data *right now*?"
+I wanted to build a simple, automated way to prove backup recoverability. Not another backup tool, but a **verification tool**.
 
-### The Technical Core: Simplicity by Design
+### The Stack Decision: Simplicity First
 
-The biggest lesson: **don't build a backup tool.** Build a *verification* tool.
+Since this was a side project, I needed to move fast. My principles: ship something useful, don't over-engineer.
 
-My initial instinct was complex. Orchestrating VM snapshots, managing restore points... the scope exploded. Then I hit the YAGNI wall. The MVP didn't need to *take* backups. It needed to *restore* them.
+*   **Framework:** Next.js 13 (App Router) – Server components for fast loads, API routes for a simple backend. Perfect for a full-stack app without managing separate services.
+*   **Styling:** Tailwind CSS – I'm not a designer. Tailwind lets me build a clean, functional UI quickly.
+*   **State:** React Context + useReducer – For this scope, it's perfect. Simple, no extra dependencies, and the state tree is straightforward. Avoiding Redux was a conscious choice for YAGNI (You Ain't Gonna Need It).
+*   **Persistence:** `localStorage` with JSON – Hear me out. For a V1 aimed at single users or small teams, this is genius. Zero backend database, zero auth complexity, zero hosting cost for persistence. Users own their data, it's portable (via the export feature), and it works instantly. It's a trade-off I'm willing to make for launch simplicity.
+*   **Deployment:** Cloudflare Pages – Free, fast, and easy. The whole app is a static site with some serverless functions.
 
-The architecture simplified to:
+### Key Learnings Building in Public
 
-1.  **Job Definition:** A TypeScript interface and a form. Cron expression, source type (`file-system`, `database`, `vm`), and a vault path. Stored in `localStorage`. That's it.
-2.  **Verification Execution:** The heart. Instead of building a scheduler from scratch, I used **Cloudflare Cron Triggers** (for production) and a **Web Worker** to simulate the sandbox restore. The "validation script" is a user-provided snippet executed in a safe context.
-3.  **State Management:** No external database. All state persists in `localStorage` as JSON. It’s portable (import/export), private (no data leaves the browser), and free to run. For a dev tool, this was the right trade-off.
+1.  **Start with the core loop.** The first thing I built wasn't a dashboard or a login screen. It was the engine: define a job -> run a verification test -> store the result. Everything else is UI around that loop.
+2.  **The "sandbox" is a abstraction.** For the V1, I simulate the sandbox restore. The real magic is in the interface that *would* connect to a real sandbox (like a Docker API or cloud provider). The value is in the orchestration and logging, not the container itself.
+3.  **Reports are the killer feature.** I thought the dashboard would be the main selling point. While useful, the **compliance report** is what gets the "aha!" moment. Being able to generate a PDF for an audit on demand? That's where the real work anxiety is relieved.
 
-**Why this stack?**
-*   **Next.js 13 App Router:** For the dashboard UI and serverless API routes for cron handling. The new layouts were perfect for the nested dashboard.
-*   **Tailwind CSS:** Rapid, consistent UI without design overhead.
-*   **TypeScript:** Non-negotiable. The data model is strict. Interfaces defined the shape of everything from day one.
+### What's Next?
 
-### The Hardest Part: The "Sandbox"
+BackupVerify is live, but it's just the start.
 
-A real sandbox (like a temporary Docker container) is out of scope for a free-tier SaaS. So I faked it with a twist.
+*   **Real Sandbox Connectors:** Integrate with Docker, Kubernetes, and major cloud providers (AWS, GCP, Azure) for actual isolated restores.
+*   **Team Features:** The Pro plan is ready. Now, I'll focus on true multi-user collaboration.
+*   **Smarter Alerts:** Use historical test data to predict failures before they happen.
 
-The verification runs in a **Web Worker**. It’s not a true sandbox, but for file-system checks or SQL queries against a restored dump, it provides process isolation. The real innovation is in the abstraction: the user writes a function that takes restored data as input and returns `{pass: boolean, log: string}`. BackupVerify calls it. This separates the *restore* from the *validate*.
+If you've ever been burned by a bad backup, give it a try. It's free for single users.
 
-### Launch Metrics & Learnings
+[**Try BackupVerify Live**](https://backupverify.pages.dev)  
+[**Check out the Code on GitHub**](https://github.com/erwnlf-dev/backupverify)
 
-*   **Tech Stack:** 100% TypeScript, 0 backend servers for core state, 1 Cloudflare Worker for cron.
-*   **Size:** 42 components, 8 pages. The entire state management fits in one `useReducer`.
-*   **Performance:** Lighthouse score of 98. `localStorage` reads are instantaneous.
-*   **Marketing:** The free tier is the engine. No sign-up wall. Just export your data and own it.
-
-**Key Learnings:**
-1.  **Solve the compliance problem first.** IT admins need reports. The dashboard is for them, the reports are for their bosses and auditors.
-2.  **Data portability is a feature.** The JSON import/export made it easy for early adopters to test and provide feedback.
-3.  **Don't over-engineer the "fake" parts.** The sandbox doesn't need to be perfect. It needs to be *useful* for 80% of validation cases.
-
-### What's Next
-
-I'm focused on making the **webhook alerts** and **report generation** rock-solid. Next up: actual container-based sandboxing for true isolation, probably via a partnership with a cloud provider.
-
-Try it. Break it. Tell me what you think.
-
-**[Launch post on Product Hunt →](https://www.producthunt.com/posts/backupverify)**
+Feedback, issues, and ideas are welcome. Thanks for reading.
 
 ---

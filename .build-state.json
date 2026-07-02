@@ -6,6 +6,11 @@
     "implement",
     "testing",
     "gap_analysis",
-    "documentation"
+    "documentation",
+    "deploy",
+    "post_deploy",
+    "marketing",
+    "distribution",
+    "monetization"
   ]
 }
